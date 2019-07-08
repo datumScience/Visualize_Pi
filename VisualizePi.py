@@ -37,13 +37,13 @@ def timer(func):
 
 
 @timer
-def pidigits(n):
+def digits(n):
     getcontext().prec = n
     
     t = Decimal(0)
     pi = Decimal(0)
     d = Decimal(0)
-    
+    #computing digits using chudnovsky algorithm
     for k in range(n):
         t = ((-1)**k)*(factorial(6*k))*(13591409+545140134*k)
         d = factorial(3*k)*(factorial(k)**3)*(640320**(3*k))
@@ -59,39 +59,14 @@ def pidigits(n):
 # In[78]:
 
 
-def gridplot(nums):
+def returndigits(nums):
     nums = nums.replace(".","")
     nums = np.array([int(num) for num in nums])
-    
     lenn = len(nums)
     dims = int(math.ceil(math.sqrt(lenn)))
     nums = np.pad(nums,(0,(dims**2) - nums.shape[0]),mode ='constant')
     nums = nums.reshape((dims,dims))
-    #fig,axe = plt.subplots(figsize = (10,10))
-    #mat = axe.matshow(nums,cmap = cm.nipy_spectral)
-    
-    #plt.title("Pi Visualized to {} places".format(lenn))
-    #axe.axis('off')
-    
-    #divider = make_axes_locatable(axe)
-    #cax = divider.append_axes("right",size = "5%", pad = 0.25)
-    #plt.colorbar(mat,cax = cax)
     return (nums)
-    #plt.show()
-
-
-# In[43]:
-
-
-if __name__ == "__main__":
-    import argparse
-
-    
-    pi , elapsed = pidigits(5)
- #   print(pi)
-
-    gridplot(pi)
-
 
 # In[62]:
 
@@ -265,7 +240,7 @@ def chordDiagram(X, ax, colors=None, width=0.1, pad=2, chordwidth=0.7):
     ax.set_ylim(-1.1, 1.1)
 
     if colors is None:
-    # use d3.js category10 https://github.com/d3/d3-3.x-api-reference/blob/master/Ordinal-Scales.md#category10
+
         colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
                   '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
         if len(x) > 10:
@@ -311,19 +286,18 @@ def chordDiagram(X, ax, colors=None, width=0.1, pad=2, chordwidth=0.7):
             ChordArc(start1, end1, start2, end2,
                      radius=1.-width, color=colors[i], chordwidth=chordwidth, ax=ax)
 
-    #print(nodePos)
     return nodePos
 
-##################################
+
 if __name__ == "__main__":
     fig = plt.figure(figsize=(6,6))
    
-    pi , elapsed = pidigits(100)
-    flux = gridplot(pi)
+    pi , elapsed = digits(100)
+    flux = returndigits(pi)
     print(len(flux))
     ax = plt.axes([0,0,1,1])
 
-    #nodePos = chordDiagram(flux, ax, colors=[hex2rgb(x) for x in ['#666666', '#66ff66', '#ff6666', '#6666ff']])
+
     nodePos = chordDiagram(flux, ax)
     ax.axis('off')
     prop = dict(fontsize=16*0.8, ha='center', va='center')
